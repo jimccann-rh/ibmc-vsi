@@ -9,7 +9,7 @@ final_message: "The system is finally up, after $UPTIME seconds"
 #  - bind-dyndb-ldap
 runcmd:
   - [sh, -lc, "dnf update -y"]
-  - [sh, -lc, "dnf install ipa-server bind-dyndb-ldap -y"]
+  - [sh, -lc, "dnf install ipa-server ipa-server-dns bind-dyndb-ldap -y"]
   - - sh
     - -lc
     - |
