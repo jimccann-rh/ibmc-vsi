@@ -20,6 +20,7 @@ hostname              = "ci-redhat"
 # ssh_key_labels      = ["ci", "ci-sshkey-vsi"]
 # vsi_private_vlan    = 3402832
 # install_extra_software = true
+# enable_public_network = true
 ```
 
 ## Run

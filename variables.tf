@@ -64,4 +64,10 @@ variable "install_extra_software" {
   default     = false
 }
 
+variable "enable_public_network" {
+  description = "If true, enable public interface (public IP) on the VSI"
+  type        = bool
+  default     = false
+}
+
 

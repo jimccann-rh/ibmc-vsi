@@ -20,7 +20,7 @@ resource "ibm_compute_vm_instance" "vsi" {
   network_speed            = var.network_speed
   hourly_billing           = true
   local_disk               = false
-  private_network_only     = false
+  private_network_only     = !var.enable_public_network
   dedicated_acct_host_only = false
   ipv6_enabled             = true
 

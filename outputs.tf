@@ -3,7 +3,7 @@ output "vsi_id" {
 }
 
 output "public_ip" {
-  value = ibm_compute_vm_instance.vsi.ipv4_address
+  value = var.enable_public_network ? ibm_compute_vm_instance.vsi.ipv4_address : null
 }
 
 output "private_ip" {
