@@ -43,20 +43,15 @@ runcmd:
       IPV6=$(ip -6 addr show "$IFACE" scope global | awk '/inet6 /{print $2}' | cut -d/ -f1 | head -n1)
       FQDN=$(hostname -f 2>/dev/null || hostname)
       HOSTNAME=$(hostname -s 2>/dev/null || hostname)
-       cp /etc/hosts /etc/hosts.bak || true
-       cat > /etc/hosts <<EOF
-       # The following lines are desirable for IPv4 capable hosts
-       ${IPV4} ${FQDN} ${HOSTNAME}
-       127.0.0.1 localhost.localdomain localhost
-       127.0.0.1 localhost4.localdomain4 localhost4
-
-       # The following lines are desirable for IPv6 capable hosts
-       EOF
-       if [ -n "$IPV6" ]; then printf '%s %s %s\n' "$IPV6" "$FQDN" "$HOSTNAME" >> /etc/hosts; fi
-       cat >> /etc/hosts <<EOF
-       ::1 localhost.localdomain localhost
-       ::1 localhost6.localdomain6 localhost6
-       EOF
+      cp /etc/hosts /etc/hosts.bak || true
+      printf '# The following lines are desirable for IPv4 capable hosts\n' > /etc/hosts
+      printf '%s %s %s\n' "$IPV4" "$FQDN" "$HOSTNAME" >> /etc/hosts
+      printf '127.0.0.1 localhost.localdomain localhost\n' >> /etc/hosts
+      printf '127.0.0.1 localhost4.localdomain4 localhost4\n\n' >> /etc/hosts
+      printf '# The following lines are desirable for IPv6 capable hosts\n' >> /etc/hosts
+      if [ -n "$IPV6" ]; then printf '%s %s %s\n' "$IPV6" "$FQDN" "$HOSTNAME" >> /etc/hosts; fi
+      printf '::1 localhost.localdomain localhost\n' >> /etc/hosts
+      printf '::1 localhost6.localdomain6 localhost6\n' >> /etc/hosts
   - [
       sh,
       -lc,
