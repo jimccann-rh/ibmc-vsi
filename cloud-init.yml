@@ -12,6 +12,11 @@ runcmd:
   - [
       sh,
       -lc,
+      "GW=$(ip route | awk '/^default/ {print $3; exit}'); if [ -n \"$GW\" ]; then cp /etc/resolv.conf /etc/resolv.conf.bak || true; printf 'nameserver %s\n' \"$GW\" > /etc/resolv.conf; fi",
+    ]
+  - [
+      sh,
+      -lc,
       "firewall-cmd --permanent --add-service={http,https,dns,freeipa-ldap,freeipa-ldaps,kerberos,kpasswd,ntp}",
     ]
   - [sh, -lc, "firewall-cmd --reload"]
