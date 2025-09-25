@@ -1,9 +1,10 @@
 locals {
-  tags = [
+  base_tags = [
     "project:${var.project}",
     "datacenter:${var.datacenter}",
     "provider:ibm-classic"
   ]
+  tags      = concat(local.base_tags, [var.vsi_tag])
 }
 
 # Look up SSH keys by label so we can pass their IDs

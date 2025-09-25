@@ -70,4 +70,10 @@ variable "enable_public_network" {
   default     = false
 }
 
+variable "vsi_tag" {
+  description = "Additional tag to apply to the VSI"
+  type        = string
+  default     = "vsphere"
+}
+
 
