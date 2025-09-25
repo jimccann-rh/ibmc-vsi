@@ -3,9 +3,9 @@ package_update: true
 package_upgrade: true
 output: { all: "| tee -a /var/log/cloud-init-output.log" }
 final_message: "The system is finally up, after $UPTIME seconds"
-packages:
-  - ipa-server
-  - bind-dyndb-ldap
+#packages:
+#  - ipa-server
+#  - bind-dyndb-ldap
 runcmd:
   - [sh, -lc, "dnf update -y"]
   - [sh, -lc, "dnf install ipa-server bind-dyndb-ldap -y"]
