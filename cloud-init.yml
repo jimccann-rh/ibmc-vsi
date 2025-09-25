@@ -12,7 +12,7 @@ runcmd:
   - [
       sh,
       -lc,
-      "GW=$(ip route | awk '/^default/ {print $3; exit}'); if [ -n \"$GW\" ]; then cp /etc/resolv.conf /etc/resolv.conf.bak || true; printf 'nameserver %s\n' \"$GW\" > /etc/resolv.conf; fi",
+      "GW_IP=$(ip route show default | awk '/default/ {print $3; exit}'); if [ -n \"$GW_IP\" ]; then echo \"Found gateway IP: $GW_IP. Configuring systemd-resolved.\"; mkdir -p /etc/systemd/resolved.conf.d; printf '%s\\n' '[Resolve]' > /etc/systemd/resolved.conf.d/99-gateway-dns.conf; printf 'DNS=%s\\n' \"$GW_IP\" >> /etc/systemd/resolved.conf.d/99-gateway-dns.conf; systemctl restart systemd-resolved; echo \"DNS configuration updated successfully.\"; else echo \"Warning: Could not determine default gateway IP. DNS not configured.\"; fi",
     ]
   - [
       sh,
