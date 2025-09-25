@@ -58,4 +58,10 @@ variable "vsi_private_vlan" {
   default     = null
 }
 
+variable "install_extra_software" {
+  description = "If true, apply cloud-init to update OS and install extra packages"
+  type        = bool
+  default     = false
+}
+
 

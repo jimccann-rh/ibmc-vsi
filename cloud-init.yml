@@ -1,0 +1,9 @@
+#cloud-config
+package_update: true
+package_upgrade: true
+packages:
+  - ipa-server
+  - bind-dyndb-ldap
+#runcmd:
+#  - [sh, -lc, "dnf -y update"]
+#  - [sh, -lc, "dnf -y install ipa-server bind-dyndb-ldap"]

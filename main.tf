@@ -33,6 +33,8 @@ resource "ibm_compute_vm_instance" "vsi" {
   # Optional: place VSI on a specific private VLAN
   private_vlan_id          = var.vsi_private_vlan
 
+  user_metadata            = var.install_extra_software ? file("${path.module}/cloud-init.yml") : null
+
   tags                     = local.tags
 }
 
