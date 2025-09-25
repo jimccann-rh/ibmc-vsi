@@ -22,7 +22,7 @@ resource "ibm_compute_vm_instance" "vsi" {
   local_disk               = false
   private_network_only     = !var.enable_public_network
   dedicated_acct_host_only = false
-  ipv6_enabled             = true
+  ipv6_enabled             = var.enable_public_network
 
   # Balanced | B1.2x4 profile
   flavor_key_name          = "B1_2X4X25"
