@@ -12,7 +12,7 @@ runcmd:
   - [
       sh,
       -lc,
-      "GW_IP=$(ip route show default | awk '/default/ {print $3; exit}'); if [ -n \"$GW_IP\" ]; then echo \"Found gateway IP: $GW_IP. Configuring systemd-resolved.\"; mkdir -p /etc/systemd/resolved.conf.d; printf '%s\\n' '[Resolve]' > /etc/systemd/resolved.conf.d/99-gateway-dns.conf; printf 'DNS=%s\\n' \"$GW_IP\" >> /etc/systemd/resolved.conf.d/99-gateway-dns.conf; systemctl restart systemd-resolved; echo \"DNS configuration updated successfully.\"; else echo \"Warning: Could not determine default gateway IP. DNS not configured.\"; fi",
+      "GW_IP=$(ip route show default | awk '/default/ {print $3; exit}'); IFACE=$(ip route show default | awk '/default/ {print $5; exit}'); if [ -n \"$GW_IP\" ]; then if systemctl list-unit-files | grep -q '^systemd-resolved.service'; then echo \"Using systemd-resolved to set DNS to $GW_IP\"; mkdir -p /etc/systemd/resolved.conf.d; printf '%s\\n' '[Resolve]' > /etc/systemd/resolved.conf.d/99-gateway-dns.conf; printf 'DNS=%s\\n' \"$GW_IP\" >> /etc/systemd/resolved.conf.d/99-gateway-dns.conf; systemctl restart systemd-resolved || true; elif command -v nmcli >/dev/null 2>&1; then echo \"Using NetworkManager to set DNS on $IFACE to $GW_IP\"; CONN=\"$(nmcli -g GENERAL.CONNECTION device show \"$IFACE\" | head -n1)\"; nmcli connection modify \"$CONN\" ipv4.ignore-auto-dns yes ipv4.dns \"$GW_IP\"; nmcli connection up \"$CONN\" || systemctl restart NetworkManager || true; else echo \"Falling back to writing /etc/resolv.conf\"; cp /etc/resolv.conf /etc/resolv.conf.bak || true; printf 'nameserver %s\\n' \"$GW_IP\" > /etc/resolv.conf; fi; else echo \"Warning: Could not determine default gateway IP. DNS not configured.\"; fi",
     ]
   - [
       sh,
