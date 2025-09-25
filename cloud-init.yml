@@ -10,4 +10,4 @@ runcmd:
       -lc,
       "firewall-cmd --permanent --add-service={http,https,dns,freeipa-ldap,freeipa-ldaps,kerberos,kpasswd,ntp}",
     ]
-  - [sh, -lc, "sudo firewall-cmd --reload"]
+  - [sh, -lc, "firewall-cmd --reload"]
