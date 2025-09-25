@@ -1,6 +1,7 @@
 #cloud-config
 package_update: false
 package_upgrade: false
+manage_etc_hosts: false
 output: { all: "| tee -a /var/log/cloud-init-output.log" }
 final_message: "The system is finally up, after $UPTIME seconds"
 #packages:
@@ -34,6 +35,28 @@ runcmd:
       else
         echo "Warning: Could not determine default gateway IP. DNS not configured."
       fi
+  - - sh
+    - -lc
+    - |
+      IFACE=$(ip route show default | awk '/default/ {print $5; exit}')
+      IPV4=$(ip -4 addr show "$IFACE" | awk '/inet /{print $2}' | cut -d/ -f1 | head -n1)
+      IPV6=$(ip -6 addr show "$IFACE" scope global | awk '/inet6 /{print $2}' | cut -d/ -f1 | head -n1)
+      FQDN=$(hostname -f 2>/dev/null || hostname)
+      HOSTNAME=$(hostname -s 2>/dev/null || hostname)
+      cp /etc/hosts /etc/hosts.bak || true
+      cat > /etc/hosts <<EOF
+      # The following lines are desirable for IPv4 capable hosts
+      ${IPV4} ${FQDN} ${HOSTNAME}
+      127.0.0.1 ${FQDN} ${HOSTNAME}
+      127.0.0.1 localhost.localdomain localhost
+      127.0.0.1 localhost4.localdomain4 localhost4
+
+      # The following lines are desirable for IPv6 capable hosts
+      ${IPV6:-::1} ${FQDN} ${HOSTNAME}
+      ::1 ${FQDN} ${HOSTNAME}
+      ::1 localhost.localdomain localhost
+      ::1 localhost6.localdomain6 localhost6
+      EOF
   - [
       sh,
       -lc,
