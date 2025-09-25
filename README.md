@@ -18,6 +18,7 @@ hostname              = "ci-redhat"
 # os_reference_code   = "REDHAT_9_64"
 # network_speed       = 100
 # ssh_key_labels      = ["ci", "ci-sshkey-vsi"]
+# vsi_private_vlan    = 3402832
 ```
 
 ## Run

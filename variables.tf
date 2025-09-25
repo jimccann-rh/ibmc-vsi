@@ -52,4 +52,10 @@ variable "os_reference_code" {
   default     = "REDHAT_9_64"
 }
 
+variable "vsi_private_vlan" {
+  description = "Private VLAN ID to attach the VSI to"
+  type        = number
+  default     = null
+}
+
 

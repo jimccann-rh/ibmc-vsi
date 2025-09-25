@@ -3,11 +3,11 @@ output "vsi_id" {
 }
 
 output "public_ip" {
-  value = ibm_compute_vm_instance.vsi.ip_address
+  value = ibm_compute_vm_instance.vsi.ipv4_address
 }
 
 output "private_ip" {
-  value = ibm_compute_vm_instance.vsi.private_ip_address
+  value = ibm_compute_vm_instance.vsi.ipv4_address_private
 }
 
 

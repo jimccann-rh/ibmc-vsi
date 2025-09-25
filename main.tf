@@ -30,6 +30,9 @@ resource "ibm_compute_vm_instance" "vsi" {
   # Public multi-tenant, attach keys
   ssh_key_ids              = [for k in data.ibm_compute_ssh_key.by_label : k.id]
 
+  # Optional: place VSI on a specific private VLAN
+  private_vlan_id          = var.vsi_private_vlan
+
   tags                     = local.tags
 }
 
