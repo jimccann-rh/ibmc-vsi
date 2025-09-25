@@ -27,10 +27,10 @@ runcmd:
           nmcli connection modify "$CONN" ipv4.ignore-auto-dns yes ipv4.dns "$GW_IP"
           nmcli connection up "$CONN" || systemctl restart NetworkManager || true
         else
-          echo "Falling back to writing /etc/resolv.conf"
-          cp /etc/resolv.conf /etc/resolv.conf.bak || true
-          printf 'nameserver %s\n' "$GW_IP" > /etc/resolv.conf
+          echo "No systemd-resolved or NetworkManager; proceeding with manual resolv.conf"
         fi
+        cp /etc/resolv.conf /etc/resolv.conf.bak || true
+        printf 'nameserver %s\n' "$GW_IP" > /etc/resolv.conf
       else
         echo "Warning: Could not determine default gateway IP. DNS not configured."
       fi
